@@ -13,9 +13,13 @@ app = Flask(__name__)
 CORS(app)
 
 # --- 從環境變數讀取設定 ---
-PROJECT_ID = os.environ.get("GCP_PROJECT")
-LOCATION = os.environ.get("GCP_REGION")
-ENDPOINT_ID = os.environ.get("VERTEX_ENDPOINT_ID")
+PROJECT_ID  = (
+    os.environ.get("GOOGLE_CLOUD_PROJECT")      # Cloud Run / Functions
+    or os.environ.get("GCP_PROJECT")            # 手動設定時也能相容
+)
+LOCATION     = os.environ.get("GCP_REGION",    "asia-east1")
+ENDPOINT_ID  = os.environ.get("VERTEX_ENDPOINT_ID")
+
 
 # --- 定義 API 路由 (Route) ---
 @app.route("/predict", methods=["POST"])
